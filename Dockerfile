@@ -39,6 +39,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 RUN apk --no-cache  add alsa-lib avahi-libs expat flac libvorbis opus soxr
 
-COPY --from=build /root/snapcast/bin/snapclient /usr/local/bin
+COPY --from=build /root/snapcast/bin/snapclient /usr/bin
 
-ENTRYPOINT ["snapclient"]
+ENTRYPOINT ["/usr/bin/snapclient"]
