@@ -1,6 +1,6 @@
-ARG ALPINE_BASE=3.12.9
+ARG ALPINE_BASE=3.20
 
-ARG SNAPCAST_VERSION=v0.26.0
+ARG SNAPCAST_VERSION=v0.28.0
 
 # SnapCast build stage
 FROM alpine:$ALPINE_BASE as build
@@ -37,7 +37,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.opencord.component.snapcast.version=$SNAPCAST_VERSION \
     org.opencord.component.snapcast.vcs-url="https://github.com/badaix/snapcast"
 
-RUN apk --no-cache  add alsa-lib avahi-libs expat flac libvorbis opus soxr
+RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr
 
 COPY --from=build /root/snapcast/bin/snapclient /usr/bin
 
