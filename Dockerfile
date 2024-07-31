@@ -3,20 +3,20 @@ ARG ALPINE_BASE=3.20
 ARG SNAPCAST_VERSION=v0.28.0
 
 # SnapCast build stage
-FROM alpine:$ALPINE_BASE as build
+#FROM alpine:$ALPINE_BASE as build
 
-ARG SNAPCAST_VERSION
+#ARG SNAPCAST_VERSION
 
-WORKDIR /root
-# Dummy file is needed, because there's no conditional copy
-COPY dummy qemu-*-static /usr/bin/
+#WORKDIR /root
+## Dummy file is needed, because there's no conditional copy
+#COPY dummy qemu-*-static /usr/bin/
 
-RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev \
- && git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
- && cd snapcast \
- && wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2 && tar -xjf boost_1_76_0.tar.bz2 \
- && cmake -S . -B build -DBOOST_ROOT=boost_1_76_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_WITH_PULSE=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_SERVER=OFF .. \
- && cmake --build build --parallel 3
+#RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev \
+# && git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
+# && cd snapcast \
+# && wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2 && tar -xjf boost_1_76_0.tar.bz2 \
+# && cmake -S . -B build -DBOOST_ROOT=boost_1_76_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_WITH_PULSE=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_SERVER=OFF .. \
+# && cmake --build build --parallel 3
 
 
 FROM alpine:$ALPINE_BASE
@@ -37,8 +37,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.opencord.component.snapcast.version=$SNAPCAST_VERSION \
     org.opencord.component.snapcast.vcs-url="https://github.com/badaix/snapcast"
 
-RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr
+RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr snapcast~=${SNAPCAST_VERSION}
 
-COPY --from=build /root/snapcast/bin/snapclient /usr/bin
+#COPY --from=build /root/snapcast/bin/snapclient /usr/bin
 
 ENTRYPOINT ["/usr/bin/snapclient"]
