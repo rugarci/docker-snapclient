@@ -1,6 +1,6 @@
 ARG ALPINE_BASE=3.21
 
-ARG SNAPCAST_VERSION=v0.29.0
+ARG SNAPCAST_VERSION=v0.32.3
 
 # SnapCast build stage
 #FROM alpine:$ALPINE_BASE as build
